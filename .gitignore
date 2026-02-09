@@ -1,0 +1,25 @@
+# 忽略虚拟环境
+venv/
+.env
+
+# 忽略 Python 缓存
+__pycache__/
+*.pyc
+
+# 忽略 IDE 配置文件
+.idea/
+.vscode/
+
+# 忽略临时生成的文件
+temp_*
+output_*.txt
+result_*.txt
+*.log
+
+# 忽略大型 DLL 文件 (建议在 Readme 中告诉用户去哪下载，或者用网盘分享)
+*.dll
+
+# 忽略生成的图标缓存
+*.spec
+build/
+dist/
