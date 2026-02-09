@@ -1,76 +1,78 @@
-# 🎙️ Whisper Local WebUI - 本地 AI 音视频转文字神器
+[🇺🇸 English](README.md) | [🇨🇳 中文说明](README_zh.md)
+<br>
+
+# 🎙️ Whisper Local WebUI - Local AI Audio/Video to Text Tool
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Faster-Whisper](https://img.shields.io/badge/Model-Faster--Whisper-green)
 ![Gradio](https://img.shields.io/badge/UI-Gradio-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-这是一个基于 `faster-whisper` 和 `Gradio` 构建的本地化语音识别工具。它利用 OpenAI 的 **Large-v3** 模型，支持 **CUDA GPU 加速**，能够将视频或音频文件快速、精准地转换为文本（TXT）。
+This is a localized speech recognition tool built on `faster-whisper` and `Gradio`. It leverages OpenAI's **Large-v3** model with **CUDA GPU acceleration** to quickly and accurately transcribe video or audio files into text (TXT).
 
-**核心优势：** 永久免费、无限时长、完全离线（保护隐私）、无需配置复杂的环境变量（内置自动修复脚本）。
-
----
-
-## ✨ 主要功能 (Features)
-
-* **⚡ 极致性能**：使用 `faster-whisper` (CTranslate2) 引擎，比原始 Whisper 快 4-5 倍。
-* **🧠 顶级模型**：默认加载 `large-v3` 模型，配合 `int8_float16` 量化，在 4GB+ 显存的显卡上即可流畅运行。
-* **🖥️ 简易 GUI**：基于 Gradio 的现代化 Web 界面，支持 MP3/MP4 拖拽上传，自动开始转录。
-* **🎞️ 全格式支持**：支持 MP3, WAV, M4A, FLAC 音频及 MP4, MKV, MOV 等视频格式。
-* **🛠️ 自动修复**：内置 DLL 路径动态加载脚本 ("Nuclear Fix")，自动解决 Windows 下常见的 `cublas64_12.dll` 和 `zlibwapi.dll` 丢失问题。
-* **🖱️ 一键启动**：提供 `.bat` 脚本，双击即可运行，无需输入命令行。
+**Key Advantages:** Permanently free, unlimited duration, completely offline (privacy protected), and requires no complex environment configuration (includes built-in auto-fix scripts).
 
 ---
 
-## 🛠️ 系统要求 (Requirements)
+## ✨ Features
 
-* **操作系统**: Windows 10 / 11
-* **显卡**: NVIDIA 显卡 (建议显存 ≥ 4GB)
-* **驱动**: CUDA Toolkit 12.x + cuDNN v9
-* **Python**: 3.8 或更高版本
+* **⚡ Extreme Performance**: Uses the `faster-whisper` (CTranslate2) engine, 4-5x faster than the original Whisper.
+* **🧠 Top-tier Model**: Defaults to the `large-v3` model with `int8_float16` quantization. Runs smoothly on GPUs with 4GB+ VRAM.
+* **🖥️ Simple GUI**: Modern Web interface based on Gradio. Supports drag-and-drop upload and automatic transcription.
+* **🎞️ All-Format Support**: Supports MP3, WAV, M4A, FLAC audio, and MP4, MKV, MOV video formats.
+* **🛠️ Auto-Fix**: Built-in DLL path dynamic loading script ("Nuclear Fix") automatically resolves common Windows issues like missing `cublas64_12.dll` or `zlibwapi.dll`.
+* **🖱️ One-Click Start**: Includes a `.bat` script. Double-click to run without using the command line.
 
 ---
 
-## 🚀 快速开始 (Quick Start)
+## 🛠️ Requirements
 
-### 1. 克隆项目
+* **OS**: Windows 10 / 11
+* **GPU**: NVIDIA GPU (Recommended VRAM ≥ 4GB)
+* **Driver**: CUDA Toolkit 12.x + cuDNN v9
+* **Python**: 3.8 or higher
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone Repository
 ```bash
-git clone [https://github.com/您的用户名/whisper-local-webui.git](https://github.com/您的用户名/whisper-local-webui.git)
+git clone [https://github.com/YOUR_USERNAME/whisper-local-webui.git](https://github.com/YOUR_USERNAME/whisper-local-webui.git)
 cd whisper-local-webui
 ```
-
-### 2. 安装依赖
-建议使用虚拟环境以避免冲突：
+### 2. Install Dependencies
+It is recommended to use a virtual environment:
 ```bash
-# 创建虚拟环境
+# Create venv
 python -m venv venv
 
-# 激活环境
+# Activate venv
 .\venv\Scripts\activate
 
-# 安装依赖包
+# Install packages
 pip install -r requirements.txt
 ```
-### 3. ⚠️ 关键步骤：配置 DLL 文件
-**注意：** 由于 GitHub 文件大小限制，核心加速库文件未包含在仓库中。您必须将以下文件手动放入项目根目录（即 `web_ui.py` 同级目录）：
 
-**必需文件清单：**
-1.  **`zlibwapi.dll`** (下载地址：[WinImage](http://www.winimage.com/zLibDll/zlib123dllx64.zip) 或从 System32 复制)
-2.  **NVIDIA cuBLAS 库** (通常在 `venv\Lib\site-packages\nvidia\cublas\bin`):
+### 3. ⚠️ Crucial Step: Configure DLL Files
+**Note:** Due to GitHub file size limits, the core acceleration libraries are NOT included in this repository. You must manually place the following files in the project root directory (same level as `web_ui.py`):
+
+**Required File List:**
+1.  **`zlibwapi.dll`** (Download: [WinImage](http://www.winimage.com/zLibDll/zlib123dllx64.zip) or copy from System32)
+2.  **NVIDIA cuBLAS Libraries** (Usually found in `venv\Lib\site-packages\nvidia\cublas\bin`):
     * `cublas64_12.dll`
     * `cublasLt64_12.dll`
-3.  **NVIDIA cuDNN v9 库** (通常在 `venv\Lib\site-packages\nvidia\cudnn\bin`):
+3.  **NVIDIA cuDNN v9 Libraries** (Usually found in `venv\Lib\site-packages\nvidia\cudnn\bin`):
     * `cudnn_ops64_9.dll`
     * `cudnn_cnn64_9.dll`
     * `cudnn_adv64_9.dll`
 
-> **提示**：如果您已运行 `pip install`，这些 NVIDIA DLL 文件通常可以在您的虚拟环境文件夹 `venv/Lib/site-packages/nvidia/` 下找到。请将它们**复制**到项目根目录。
+> **Tip**: If you have run `pip install`, these NVIDIA DLL files can usually be found in your virtual environment folder `venv/Lib/site-packages/nvidia/`. Please **copy** them to the project root directory.
 
-
-### 4. 运行
-双击项目目录下的 **`run.bat`**，或者在命令行运行：
+### 4. Run
+Double-click **`run.bat`** in the project directory, or run via command line:
 ```bash
-#找到你自己安装位置
+#find your location
 cd /d D:\ 
 cd whisper_project
 venv\Scripts\activate
@@ -78,51 +80,50 @@ venv\Scripts\activate
 
 python web_ui.py
 ```
-程序启动后，浏览器会自动打开 `http://127.0.0.1:7860`。
+Then, it will automatically open a webpage `http://127.0.0.1:7860`.
 
 ---
-
-## 📂 项目结构说明
+## 📂 Project Structure
 
 ```text
 whisper-local-webui/
-├── web_ui.py           # [核心] 主程序，包含 Web 界面、自动转录逻辑和 DLL 修复代码
-├── run.bat             # [脚本] Windows 一键启动脚本
-├── requirements.txt    # [配置] Python 依赖列表
-├── README.md           # [文档] 项目说明书
-├── .gitignore          # [配置] Git 忽略规则 (忽略了 venv 和 dll)
-└── (DLL Files...)      # [运行库] 上述提到的 .dll 文件需放在这里
+├── web_ui.py           # [Core] Main program (UI, logic, DLL fix)
+├── run.bat             # [Script] Windows one-click start script
+├── requirements.txt    # [Config] Python dependencies
+├── README.md           # [Doc] English Documentation
+├── README_zh.md        # [Doc] Chinese Documentation
+├── .gitignore          # [Config] Git ignore rules
+└── (DLL Files...)      # [Libs] The .dll files mentioned above
 ```
+## ❓ FAQ
 
-## ❓ 常见问题 (FAQ)
+**Q: Why do I get `Library cublas64_12.dll is not found` error?**
 
-**Q: 为什么启动时报错 `Library cublas64_12.dll is not found`？**
+A: This is because necessary NVIDIA acceleration library files are missing in the project root. Please strictly follow Step 3 in "Quick Start" and manually copy `zlibwapi.dll`, `cublas`, and `cudnn` related DLL files to the project root directory.
 
-A: 这是因为项目根目录下缺少必要的 NVIDIA 加速库文件。请务必参考“快速开始”中的第 3 步，将 `zlibwapi.dll`、`cublas` 和 `cudnn` 相关的 DLL 文件手动复制到项目根目录。
+**Q: Why is the first run so slow?**
 
-**Q: 第一次运行为什么这么慢？**
+A: On the first run, the program automatically downloads the `large-v3` model (approx. 3GB) from HuggingFace. The speed depends on your network connection. Subsequent runs will be very fast.
 
-A: 首次运行时，程序会自动从 HuggingFace 下载 `large-v3` 模型（约 3GB）。下载速度取决于您的网络环境。下载完成后，后续运行会非常快。
+**Q: What if I get "CUDA Out of Memory"?**
 
-**Q: 显存不足 (CUDA Out of Memory) 怎么办？**
+A: The default configuration requires about 4GB+ VRAM. If you have less VRAM:
+1. Open `web_ui.py`.
+2. Change `COMPUTE_TYPE` to `"int8"` (Pure INT8 quantization, lower VRAM usage).
+3. Or change `MODEL_SIZE` to `"medium"` or `"small"`.
 
-A: 默认配置需要约 4GB+ 显存。如果您的显存较小：
-1. 打开 `web_ui.py`。
-2. 将 `COMPUTE_TYPE` 修改为 `"int8"`（纯 INT8 量化，显存占用更低）。
-3. 或者将 `MODEL_SIZE` 修改为 `"medium"` 或 `"small"`。
+**Q: Error `TypeError: ... unexpected keyword argument 'show_copy_button'`?**
 
-**Q: 报错 `TypeError: ... unexpected keyword argument 'show_copy_button'`？**
+A: Your Gradio version is too old. Run `pip install --upgrade gradio` to update, or remove the `show_copy_button=True` parameter in the code.
 
-A: 这是因为您的 Gradio 版本过低。请运行 `pip install --upgrade gradio` 更新库，或者在代码中删除 `show_copy_button=True` 参数。
+**Q: What if the browser doesn't open automatically?**
 
-**Q: 网页没有自动弹出怎么办？**
+A: Please manually copy the address shown in the console (usually `http://127.0.0.1:7860`) and open it in your browser.
 
-A: 请手动复制控制台显示的地址（通常是 `http://127.0.0.1:7860`）到浏览器中打开。
+## 📜 License
+MIT License. See [LICENSE](LICENSE) file for details.
 
-## 📜 许可证
-本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
-
-## 🙏 致谢
+## 🙏 Acknowledgments
 * [Faster-Whisper](https://github.com/SYSTRAN/faster-whisper)
 * [Gradio](https://gradio.app/)
 * [OpenAI Whisper](https://github.com/openai/whisper)
