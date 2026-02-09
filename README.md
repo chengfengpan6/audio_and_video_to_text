@@ -38,8 +38,8 @@ This is a localized speech recognition tool built on `faster-whisper` and `Gradi
 
 ### 1. Clone Repository
 ```bash
-git clone [https://github.com/YOUR_USERNAME/whisper-local-webui.git](https://github.com/YOUR_USERNAME/whisper-local-webui.git)
-cd whisper-local-webui
+git clone [https://github.com/chengfengpan6/audio_and_video_to_text.git](https://github.com/chengfengpan6/audio_and_video_to_text.git)
+cd audio_and_video_to_text
 ```
 ### 2. Install Dependencies
 It is recommended to use a virtual environment:

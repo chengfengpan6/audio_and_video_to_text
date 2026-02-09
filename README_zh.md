@@ -38,8 +38,8 @@
 
 ### 1. 克隆项目
 ```bash
-git clone [https://github.com/您的用户名/whisper-local-webui.git](https://github.com/您的用户名/whisper-local-webui.git)
-cd whisper-local-webui
+git clone [https://github.com/chengfengpan6/audio_and_video_to_text.git](https://github.com/chengfengpan6/audio_and_video_to_text.git)
+cd audio_and_video_to_text
 ```
 
 ### 2. 安装依赖
