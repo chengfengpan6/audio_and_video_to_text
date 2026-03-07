@@ -18,7 +18,9 @@ This is a localized speech recognition tool built on `faster-whisper` and `Gradi
 
 * **⚡ Extreme Performance**: Uses the `faster-whisper` (CTranslate2) engine, 4-5x faster than the original Whisper.
 * **🧠 Top-tier Model**: Defaults to the `large-v3` model with `int8_float16` quantization. Runs smoothly on GPUs with 4GB+ VRAM.
-* **🖥️ Simple GUI**: Modern Web interface based on Gradio. Supports drag-and-drop upload and automatic transcription.
+* **🖥️ Simple GUI**: Modern Web interface based on Gradio. Supports drag-and-drop upload, language selection, and one-click transcription.
+* **📊 Live Progress Visualization**: Shows a dynamic progress bar and percentage during transcription, such as `20%` or `67%`, with remaining progress.
+* **🌐 Selectable Transcription Language**: Choose `Chinese`, `English`, or `Auto Detect` directly in the Web UI before transcription.
 * **🎞️ All-Format Support**: Supports MP3, WAV, M4A, FLAC audio, and MP4, MKV, MOV video formats.
 * **🛠️ Auto-Fix**: Built-in DLL path dynamic loading script ("Nuclear Fix") automatically resolves common Windows issues like missing `cublas64_12.dll` or `zlibwapi.dll`.
 * **🖱️ One-Click Start**: Includes a `.bat` script. Double-click to run without using the command line.
@@ -81,6 +83,8 @@ venv\Scripts\activate
 python web_ui.py
 ```
 Then, it will automatically open a webpage `http://127.0.0.1:7860`.
+
+Before starting transcription, use the language selector in the UI to choose `Chinese`, `English`, or `Auto Detect`, then click the start button once.
 
 ---
 ## 📂 Project Structure

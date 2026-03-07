@@ -1,6 +1,6 @@
 # 🎙️ Whisper Local WebUI - 本地 AI 音视频转文字神器
 
-[🇺🇸 English](README_zh.md) | [🇨🇳 中文说明](README_zh.md)
+[🇺🇸 English](README.md) | [🇨🇳 中文说明](README_zh.md)
 <br>
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
@@ -18,7 +18,9 @@
 
 * **⚡ 极致性能**：使用 `faster-whisper` (CTranslate2) 引擎，比原始 Whisper 快 4-5 倍。
 * **🧠 顶级模型**：默认加载 `large-v3` 模型，配合 `int8_float16` 量化，在 4GB+ 显存的显卡上即可流畅运行。
-* **🖥️ 简易 GUI**：基于 Gradio 的现代化 Web 界面，支持 MP3/MP4 拖拽上传，自动开始转录。
+* **🖥️ 简易 GUI**：基于 Gradio 的现代化 Web 界面，支持 MP3/MP4 拖拽上传、语言选择和一键开始转录。
+* **📊 实时进度条**：转录过程中会动态显示进度条和百分比，例如 `20%`、`67%`，同时提示剩余进度。
+* **🌐 语言可选**：新增下拉选择框，可在转录前选择 `中文`、`English` 或 `自动检测`。
 * **🎞️ 全格式支持**：支持 MP3, WAV, M4A, FLAC 音频及 MP4, MKV, MOV 等视频格式。
 * **🛠️ 自动修复**：内置 DLL 路径动态加载脚本 ("Nuclear Fix")，自动解决 Windows 下常见的 `cublas64_12.dll` 和 `zlibwapi.dll` 丢失问题。
 * **🖱️ 一键启动**：提供 `.bat` 脚本，双击即可运行，无需输入命令行。
@@ -82,6 +84,8 @@ venv\Scripts\activate
 python web_ui.py
 ```
 程序启动后，浏览器会自动打开 `http://127.0.0.1:7860`。
+
+开始转录前，可先在网页中的语言下拉框里选择 `中文`、`English` 或 `自动检测`，然后点击一次“开始转录”。
 
 ---
 
