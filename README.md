@@ -1,133 +1,337 @@
-[🇺🇸 English](README.md) | [🇨🇳 中文说明](README_zh.md)
+[English](README.md) | [中文说明](README_zh.md)
 <br>
 
-# 🎙️ Whisper Local WebUI - Local AI Audio/Video to Text Tool
+# Whisper Local WebUI - Local AI Audio/Video to Text Tool
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Faster-Whisper](https://img.shields.io/badge/Model-Faster--Whisper-green)
 ![Gradio](https://img.shields.io/badge/UI-Gradio-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-This is a localized speech recognition tool built on `faster-whisper` and `Gradio`. It leverages OpenAI's **Large-v3** model with **CUDA GPU acceleration** to quickly and accurately transcribe video or audio files into text (TXT).
+This is a local speech recognition tool built with `faster-whisper` and `Gradio`. It can transcribe audio or video files into TXT text with the OpenAI Whisper `large-v3` model.
 
-**Key Advantages:** Permanently free, unlimited duration, completely offline (privacy protected), and requires no complex environment configuration (includes built-in auto-fix scripts).
+The WebUI now supports both **CPU mode** for iGPU / business laptops and **GPU mode** for NVIDIA dGPU computers. Even if an NVIDIA dGPU is detected, you can still manually choose CPU mode before transcription.
 
----
-
-## ✨ Features
-
-* **⚡ Extreme Performance**: Uses the `faster-whisper` (CTranslate2) engine, 4-5x faster than the original Whisper.
-* **🧠 Top-tier Model**: Defaults to the `large-v3` model with `int8_float16` quantization. Runs smoothly on GPUs with 4GB+ VRAM.
-* **🖥️ Simple GUI**: Modern Web interface based on Gradio. Supports drag-and-drop upload, language selection, and one-click transcription.
-* **📊 Live Progress Visualization**: Shows a dynamic progress bar and percentage during transcription, such as `20%` or `67%`, with remaining progress.
-* **🌐 Selectable Transcription Language**: Choose `Chinese`, `English`, or `Auto Detect` directly in the Web UI before transcription.
-* **🎞️ All-Format Support**: Supports MP3, WAV, M4A, FLAC audio, and MP4, MKV, MOV video formats.
-* **🛠️ Auto-Fix**: Built-in DLL path dynamic loading script ("Nuclear Fix") automatically resolves common Windows issues like missing `cublas64_12.dll` or `zlibwapi.dll`.
-* **🖱️ One-Click Start**: Includes a `.bat` script. Double-click to run without using the command line.
+**Key advantages:** free to use, local/offline after the model is downloaded, supports long files, and provides a simple browser-based workflow.
 
 ---
 
-## 🛠️ Requirements
+## Features
+
+* **CPU or GPU runtime selection**: choose whether the whole project runs on CPU or NVIDIA CUDA GPU before uploading files.
+* **Runtime indicator lights**: the selected mode turns green and the unselected mode turns red, so it is clear whether CPU or GPU is active.
+* **Bilingual WebUI**: switch the interface language in the top-right corner with `ENG/中文`.
+* **Selectable transcription language**: choose `Auto Detect`, `Chinese`, `English`, or `Filipino`.
+* **Supported file formats shown in the upload area**: MP3, WAV, M4A, FLAC, MP4, MKV, MOV.
+* **Clear unsupported-format handling**: unsupported uploads show `Unsupported File Format. Click OK to upload again.`
+* **Live transcription status**: shows animated dots plus current transcription time and media duration instead of an inaccurate percentage bar.
+* **Clear TXT download button**: after transcription finishes, use the prominent download button to download the generated TXT file.
+* **One-click start script**: `run.bat` starts the local WebUI without typing commands.
+
+---
+
+## Requirements
 
 * **OS**: Windows 10 / 11
-* **GPU**: NVIDIA GPU (Recommended VRAM ≥ 4GB)
-* **Driver**: CUDA Toolkit 12.x + cuDNN v9
 * **Python**: 3.8 or higher
+* **CPU mode**: works on ordinary CPUs, including laptops with only integrated graphics.
+* **GPU mode**: requires an NVIDIA GPU with working CUDA/cuDNN runtime files.
+* **Disk/network**: the first model download can be several GB, depending on the Whisper model cache state.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1. Clone Repository
+### 1. Clone or open the project
 ```bash
-git clone [https://github.com/chengfengpan6/audio_and_video_to_text.git](https://github.com/chengfengpan6/audio_and_video_to_text.git)
+git clone https://github.com/chengfengpan6/audio_and_video_to_text.git
 cd audio_and_video_to_text
 ```
-### 2. Install Dependencies
-It is recommended to use a virtual environment:
+
+If you already have this project locally, open its folder directly.
+
+### 2. Create and activate a virtual environment
 ```bash
-# Create venv
 python -m venv venv
-
-# Activate venv
 .\venv\Scripts\activate
+```
 
-# Install packages
+### 3. Install dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. ⚠️ Crucial Step: Configure DLL Files
-**Note:** Due to GitHub file size limits, the core acceleration libraries are NOT included in this repository. You must manually place the following files in the project root directory (same level as `web_ui.py`):
+### 4. Optional GPU DLL setup
+GPU mode needs NVIDIA CUDA/cuDNN libraries. If you want GPU acceleration, place these DLL files in the same folder as `web_ui.py`:
 
-**Required File List:**
-1.  **`zlibwapi.dll`** (Download: [WinImage](http://www.winimage.com/zLibDll/zlib123dllx64.zip) or copy from System32)
-2.  **NVIDIA cuBLAS Libraries** (Usually found in `venv\Lib\site-packages\nvidia\cublas\bin`):
-    * `cublas64_12.dll`
-    * `cublasLt64_12.dll`
-3.  **NVIDIA cuDNN v9 Libraries** (Usually found in `venv\Lib\site-packages\nvidia\cudnn\bin`):
-    * `cudnn_ops64_9.dll`
-    * `cudnn_cnn64_9.dll`
-    * `cudnn_adv64_9.dll`
+1. `zlibwapi.dll`
+2. `cublas64_12.dll`
+3. `cublasLt64_12.dll`
+4. `cudnn_ops64_9.dll`
+5. `cudnn_cnn64_9.dll`
+6. `cudnn_adv64_9.dll`
 
-> **Tip**: If you have run `pip install`, these NVIDIA DLL files can usually be found in your virtual environment folder `venv/Lib/site-packages/nvidia/`. Please **copy** them to the project root directory.
+These files are often available under:
 
-### 4. Run
-Double-click **`run.bat`** in the project directory, or run via command line:
+```text
+venv\Lib\site-packages\nvidia\cublas\bin
+venv\Lib\site-packages\nvidia\cudnn\bin
+```
+
+CPU-only users can skip GPU acceleration setup and choose CPU mode in the WebUI.
+
+### 5. Run
+Double-click `run.bat`, or run:
+
 ```bash
-#find your location
-cd /d D:\ 
-cd whisper_project
-venv\Scripts\activate
-
-
+cd /d D:\whisper_project
+.\venv\Scripts\activate
 python web_ui.py
 ```
-Then, it will automatically open a webpage `http://127.0.0.1:7860`.
 
-Before starting transcription, use the language selector in the UI to choose `Chinese`, `English`, or `Auto Detect`, then click the start button once.
+The browser should open automatically at:
+
+```text
+http://127.0.0.1:7860
+```
 
 ---
-## 📂 Project Structure
+
+## How to Use the WebUI
+
+1. In the top-right corner, choose `ENG` or `中文` for the WebUI language.
+2. In step 1, choose the runtime:
+   * `CPU`: best for integrated graphics, business laptops, thin laptops, or maximum compatibility.
+   * `GPU`: best for NVIDIA CUDA dGPU computers.
+3. Check the CPU/GPU indicator lights:
+   * Green means active.
+   * Red means inactive.
+4. Upload a supported file: MP3, WAV, M4A, FLAC, MP4, MKV, or MOV.
+5. Choose the transcription language: `Auto Detect`, `Chinese`, `English`, or `Filipino`.
+6. Click `Start Transcription`.
+7. Watch the animated status and elapsed time while the model works.
+8. When finished, click the download button to save the TXT result.
+
+---
+
+## Supported Languages
+
+Confirmed from the local `faster-whisper` tokenizer, the deployed multilingual Whisper model accepts **100 language codes**. The current WebUI manually exposes `Auto Detect`, `Chinese`, `English`, and `Filipino`; `Auto Detect` can be used for the full multilingual model support listed below.
+
+| Code | Language |
+| --- | --- |
+| `af` | Afrikaans |
+| `am` | Amharic |
+| `ar` | Arabic |
+| `as` | Assamese |
+| `az` | Azerbaijani |
+| `ba` | Bashkir |
+| `be` | Belarusian |
+| `bg` | Bulgarian |
+| `bn` | Bengali |
+| `bo` | Tibetan |
+| `br` | Breton |
+| `bs` | Bosnian |
+| `ca` | Catalan |
+| `cs` | Czech |
+| `cy` | Welsh |
+| `da` | Danish |
+| `de` | German |
+| `el` | Greek |
+| `en` | English |
+| `es` | Spanish |
+| `et` | Estonian |
+| `eu` | Basque |
+| `fa` | Persian |
+| `fi` | Finnish |
+| `fo` | Faroese |
+| `fr` | French |
+| `gl` | Galician |
+| `gu` | Gujarati |
+| `ha` | Hausa |
+| `haw` | Hawaiian |
+| `he` | Hebrew |
+| `hi` | Hindi |
+| `hr` | Croatian |
+| `ht` | Haitian Creole |
+| `hu` | Hungarian |
+| `hy` | Armenian |
+| `id` | Indonesian |
+| `is` | Icelandic |
+| `it` | Italian |
+| `ja` | Japanese |
+| `jw` | Javanese |
+| `ka` | Georgian |
+| `kk` | Kazakh |
+| `km` | Khmer |
+| `kn` | Kannada |
+| `ko` | Korean |
+| `la` | Latin |
+| `lb` | Luxembourgish |
+| `ln` | Lingala |
+| `lo` | Lao |
+| `lt` | Lithuanian |
+| `lv` | Latvian |
+| `mg` | Malagasy |
+| `mi` | Maori |
+| `mk` | Macedonian |
+| `ml` | Malayalam |
+| `mn` | Mongolian |
+| `mr` | Marathi |
+| `ms` | Malay |
+| `mt` | Maltese |
+| `my` | Burmese |
+| `ne` | Nepali |
+| `nl` | Dutch |
+| `nn` | Norwegian Nynorsk |
+| `no` | Norwegian |
+| `oc` | Occitan |
+| `pa` | Punjabi |
+| `pl` | Polish |
+| `ps` | Pashto |
+| `pt` | Portuguese |
+| `ro` | Romanian |
+| `ru` | Russian |
+| `sa` | Sanskrit |
+| `sd` | Sindhi |
+| `si` | Sinhala |
+| `sk` | Slovak |
+| `sl` | Slovenian |
+| `sn` | Shona |
+| `so` | Somali |
+| `sq` | Albanian |
+| `sr` | Serbian |
+| `su` | Sundanese |
+| `sv` | Swedish |
+| `sw` | Swahili |
+| `ta` | Tamil |
+| `te` | Telugu |
+| `tg` | Tajik |
+| `th` | Thai |
+| `tk` | Turkmen |
+| `tl` | Tagalog / Filipino |
+| `tr` | Turkish |
+| `tt` | Tatar |
+| `uk` | Ukrainian |
+| `ur` | Urdu |
+| `uz` | Uzbek |
+| `vi` | Vietnamese |
+| `yi` | Yiddish |
+| `yo` | Yoruba |
+| `zh` | Chinese |
+| `yue` | Cantonese |
+
+---
+
+## CPU-only Laptop Guide
+
+Use this guide if your laptop has only integrated graphics, such as many thin-and-light laptops, business laptops, Intel Iris Xe laptops, AMD Radeon integrated graphics laptops, or office computers without an NVIDIA dGPU.
+
+### What to expect
+
+CPU mode is more compatible, but it is slower than GPU mode. The first run may also take a long time because the `large-v3` model must be downloaded and loaded.
+
+For best results on CPU-only machines:
+
+* Keep the laptop plugged into power.
+* Close heavy apps such as games, video editors, and large browsers.
+* Try a short audio file first before processing a long meeting or video.
+* Prefer audio files over video files when possible. If you have a video, extracting audio first can reduce workload.
+* Be patient with long files. CPU transcription can take much longer than the media duration.
+
+### Step-by-step CPU mode tutorial
+
+1. Install Python 3.8 or newer.
+2. Open PowerShell in the project folder.
+3. Create the virtual environment:
+   ```bash
+   python -m venv venv
+   ```
+4. Activate it:
+   ```bash
+   .\venv\Scripts\activate
+   ```
+5. Install packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+6. Start the WebUI:
+   ```bash
+   python web_ui.py
+   ```
+7. Open `http://127.0.0.1:7860` if the browser does not open automatically.
+8. In the first runtime section, choose `CPU (Compatibility / iGPU)`.
+9. Confirm the CPU light is green and GPU is red.
+10. Upload a supported file.
+11. Choose the transcription language. If unsure, use `Auto Detect`.
+12. Click `Start Transcription`.
+13. Wait until the status shows completion.
+14. Click the TXT download button.
+
+### Recommended CPU workflow
+
+If a long video is slow on CPU:
+
+1. Convert or export the video audio to MP3, WAV, M4A, or FLAC.
+2. Upload the audio file instead of the original video.
+3. Keep the runtime set to CPU.
+4. Let the process finish without refreshing the page.
+
+---
+
+## Project Structure
 
 ```text
 whisper-local-webui/
-├── web_ui.py           # [Core] Main program (UI, logic, DLL fix)
-├── run.bat             # [Script] Windows one-click start script
-├── requirements.txt    # [Config] Python dependencies
-├── README.md           # [Doc] English Documentation
-├── README_zh.md        # [Doc] Chinese Documentation
-├── .gitignore          # [Config] Git ignore rules
-└── (DLL Files...)      # [Libs] The .dll files mentioned above
+├── web_ui.py           # Main WebUI, runtime selection, transcription logic
+├── run.bat             # Windows one-click launcher
+├── requirements.txt    # Python dependencies
+├── README.md           # English documentation
+├── README_zh.md        # Chinese documentation
+├── .gitignore          # Git ignore rules
+└── (DLL files...)      # Optional GPU runtime libraries
 ```
-## ❓ FAQ
 
-**Q: Why do I get `Library cublas64_12.dll is not found` error?**
+---
 
-A: This is because necessary NVIDIA acceleration library files are missing in the project root. Please strictly follow Step 3 in "Quick Start" and manually copy `zlibwapi.dll`, `cublas`, and `cudnn` related DLL files to the project root directory.
+## FAQ
 
-**Q: Why is the first run so slow?**
+**Q: I do not have an NVIDIA GPU. Can I still use this project?**
 
-A: On the first run, the program automatically downloads the `large-v3` model (approx. 3GB) from HuggingFace. The speed depends on your network connection. Subsequent runs will be very fast.
+A: Yes. Start the WebUI and choose `CPU (Compatibility / iGPU)` in the first step.
 
-**Q: What if I get "CUDA Out of Memory"?**
+**Q: Why is CPU mode slow?**
 
-A: The default configuration requires about 4GB+ VRAM. If you have less VRAM:
-1. Open `web_ui.py`.
-2. Change `COMPUTE_TYPE` to `"int8"` (Pure INT8 quantization, lower VRAM usage).
-3. Or change `MODEL_SIZE` to `"medium"` or `"small"`.
+A: Whisper `large-v3` is a large AI model. CPU mode is designed for compatibility, not maximum speed.
 
-**Q: Error `TypeError: ... unexpected keyword argument 'show_copy_button'`?**
+**Q: Why is the first run slow?**
 
-A: Your Gradio version is too old. Run `pip install --upgrade gradio` to update, or remove the `show_copy_button=True` parameter in the code.
+A: The model may need to be downloaded from Hugging Face and loaded locally. Later runs should start faster after the model is cached.
 
-**Q: What if the browser doesn't open automatically?**
+**Q: What should I do if GPU mode fails?**
 
-A: Please manually copy the address shown in the console (usually `http://127.0.0.1:7860`) and open it in your browser.
+A: Choose CPU mode first. GPU mode requires an NVIDIA GPU plus compatible CUDA/cuDNN DLL files.
 
-## 📜 License
-MIT License. See [LICENSE](LICENSE) file for details.
+**Q: What file formats are supported?**
 
-## 🙏 Acknowledgments
+A: MP3, WAV, M4A, FLAC, MP4, MKV, and MOV.
+
+**Q: What if I upload an unsupported file?**
+
+A: The WebUI will show `Unsupported File Format. Click OK to upload again.` Click OK, then upload a supported file.
+
+**Q: What if the browser does not open automatically?**
+
+A: Manually open `http://127.0.0.1:7860`.
+
+---
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+## Acknowledgments
+
 * [Faster-Whisper](https://github.com/SYSTRAN/faster-whisper)
 * [Gradio](https://gradio.app/)
 * [OpenAI Whisper](https://github.com/openai/whisper)
